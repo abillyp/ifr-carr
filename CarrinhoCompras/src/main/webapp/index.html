@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>InfraCommerce - Carrinho de Compras</title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-resource.js"></script>
+<script type="text/javascript" src="app/app.js"></script>
+<script type="text/javascript" src="app/general.controller.js"></script>
+<script type="text/javascript" src="app/produto.service.js"></script>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body ng-app="carrinhoApp" ng-controller="GeneralController">
+
+	
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Produtos</div>
+		<div class="panel-body">
+			<form class="col-md-4" ng-submit="saveProduto()">
+				<div class="form-group">
+					<label for="nomeProduto">Nome do Produto</label> <input type="text"
+						ng-model="produto.nome" class="form-control" id="nomeProduto"
+						placeholder="nome Produto">
+				</div>
+				<div class="form-group">
+					<label for="valorProduto">Valor</label> <input type="text"
+						ng-model="produto.valor" class="form-control"
+						id="valorProduto" placeholder="Valor">
+				</div>
+
+				<button type="submit" class="btn btn-default">{{buttonText}}</button>
+				
+			</form>
+
+			<div class="table-responsive col-md-6">
+				<table class="table table-striped">
+					<tr>
+						<th>Nome</th>
+						<th>Valor</th>
+						<th></th>
+					</tr>
+					<tr ng-repeat="produto in listaProdutos">
+						<td>{{produto.nome}}</td>
+						<td>{{produto.valor}}</td>
+						<td>
+							<button type="button" class="btn btn-default"
+								ng-click="updateProdutoInit(produto)">
+								<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+							</button>
+							<button type="button" class="btn btn-default"
+								ng-click="deleteProduto(produto)">
+								<span class="glyphicon glyphicon-remove-circle"
+									aria-hidden="true"></span>
+							</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

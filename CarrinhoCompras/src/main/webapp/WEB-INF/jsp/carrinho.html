@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>InfraCommerce - Carrinho de Compras</title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-resource.js"></script>
+<script type="text/javascript" src="../app/app.js"></script>
+<script type="text/javascript" src="../app/general.controller.js"></script>
+<script type="text/javascript" src="../app/carrinho.service.js"></script>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+	<script type="text/javascript">
+	
+		angular.module('Carrinho',[]).run(function($rootScope) {
+			$rootScope.titulo = 'Carrinho de compras';
+		})
+		.service('BuscarProdutosAPI', function($http, $q){
+			var servico = this;
+			
+			servico.Buscar = function (sNome){
+				var resultado = $q.defer();
+				
+				var urlAPI = '"http://localhost:8080/produto/list';
+				
+				$http.get(urlAPI).then(function(resposta) {
+					var lista = resposta.data.map(function(ProdutoAPI) {
+						return {
+							idProduto : ProdutoAPI.id,
+							nomeProduto: ProdutoAPI.nome,
+							valorProduto: ProdutoAPI.valor
+						}
+					}) 
+				});
+				resultado.resolve(lista);
+			}, 
+			function() { 
+				resultado.reject() 
+			};
+			return resultado.promise;	
+		})
+		.controller('listaProdutocontroller'), function(BuscarProdutosAPI) {
+			var ctrl = this;
+			ctrl.titulo = 'Escolha o produto ';
+			ctrl.textoBusca = null;
+			
+			ctrl.Buscar = function(){
+				BuscarProdutosAPI.Buscar(ctrl.textoBusca), then(function(lista) {
+					ctrl.lista = lista;
+					console.log(lista);
+				})
+			}
+		};
+		
+		
+	</script>	
+	
+	
+</head>
+<body ng-app="carrinhoApp" ng-controller="listaProdutocontroller as listPrd">
+
+	
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Itens</div>
+		<div class="panel-body">
+			<form class="col-md-4" ng-submit="saveItem()">
+				<div class="form-group">
+					<label for="nomeProduto">Nome do Produto</label> <input type="text"
+						ng-model="listPrd.nome" class="form-control" id="nomeProduto"
+						placeholder="nome Produto">
+				</div>
+				<div class="form-group">
+					<label for="valorProduto">Valor</label> <input type="text"
+						ng-model="listPrd.valor" class="form-control"
+						id="valorProduto" placeholder="Valor">
+				</div>
+
+				<button type="submit" class="btn btn-default">{{buttonText}}</button>
+				
+			</form>
+
+			<div class="table-responsive col-md-6">
+				<table class="table table-striped">
+					<tr>
+						<th>Quantidade</th>
+						
+						<th>Nome</th>
+						<th>Valor</th>
+						<th></th>
+					</tr>
+					<tr ng-repeat="item in listaItem">
+						<td>
+						<input type="text"
+						ng-model="item.quantidade" class="form-control form-control-sm" id="quantidadeProduto"
+						placeholder="Qtd" value="{{item.quantidade}}" >
+						</td>
+						<td>{{item.produto.nome}}</td>
+						<td>{{item.valorTotal}}</td>
+						<td>
+							<button type="button" class="btn btn-default"
+								ng-click="insertItem(Item)">
+								<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+							</button>
+							<button type="button" class="btn btn-default"
+								ng-click="deleteItem(Item)">
+								<span class="glyphicon glyphicon-remove-circle"
+									aria-hidden="true"></span>
+							</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
