@@ -1,38 +1,38 @@
 angular.module("carrinhoApp").controller("GeneralController", GeneralController);
 
-GeneralController.inject = [ '$scope', 'Produto' ];
+GeneralController.inject = [ '$scope', 'Produtos' ];
 
-function GeneralController($scope, Produto) {
+function GeneralController($scope, Produtos) {
 	
-	$scope.listaProdutos = Produto.query();
+	$scope.listaProdutos = Produtos.query();
 
-	$scope.produto = {};
+	$scope.produtos = {};
 	
 	$scope.buttonText="Submit";
 	
-	$scope.saveProduto = function() {
-		if ($scope.produto.id !== undefined) {
-			Produto.update($scope.produto, function() {
-				$scope.listaProdutos = Produto.query();
-				$scope.produto = {};
+	$scope.saveProdutos = function() {
+		if ($scope.produtos.id !== undefined) {
+			Produtos.update($scope.produtos, function() {
+				$scope.listaProdutos = Produtos.query();
+				$scope.produtos = {};
 				$scope.buttonText="Submit";
 			});
 		} else {
-			Produto.save($scope.produto, function() {
-				$scope.listaProdutos = Produto.query();
-				$scope.produto = {};
+			Produtos.save($scope.produtos, function() {
+				$scope.listaProdutos = Produtos.query();
+				$scope.produtos = {};
 			});
 		}
 	}
 
-	$scope.updateProdutoInit = function(produto) {
+	$scope.updateProdutosInit = function(produtos) {
 		$scope.buttonText="Atualizar";
-		$scope.produto = produto;
+		$scope.produtos = produtos;
 	}
 
-	$scope.deleteProduto = function(produto) {
-		produto.$delete({id: produto.id}, function() {
-			$scope.listaProdutos = Produto.query();
+	$scope.deleteProdutos = function(produtos) {
+		produtos.$delete({id: produtos.id}, function() {
+			$scope.listaProdutos = Produtos.query();
 		});
 	}
 	
