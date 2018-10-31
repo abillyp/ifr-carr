@@ -1,10 +1,10 @@
-angular.module('carrinhoApp').factory('Produto', Produto);
+angular.module('carrinhoApp').factory('Produtos', Produtos);
 
-Produto.$inject=['$resource'];
+Produtos.$inject=['$resource'];
 
-function Produto($resource){
+function Produtos($resource){
 	
-	var resourceUrl = 'produto/:id';
+	var resourceUrl = 'produtos/:id';
 	
 	return $resource(resourceUrl, {},{
 		'update':{
